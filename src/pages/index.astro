@@ -1,0 +1,36 @@
+---
+import Layout from "@layout/Layout.astro";
+import Schedule from "../modules/main/components/Schedule.astro";
+
+import { schedule } from "../assets/lib/data";
+---
+
+<Layout title="Mi Horario">
+	<main>
+	  <h1 class="title">Mi Horario Semanal</h1>
+	  <Schedule days={schedule.days} />
+	</main>
+  </Layout>
+  
+  <style>
+	main {
+	  width: 100%;
+	  min-height: 100vh;
+	  background: #f3f4f6;
+	}
+  
+	.title {
+	  text-align: center;
+	  color: #1a1a1a;
+	  padding: 2rem 0;
+	  font-size: 2rem;
+	  margin: 0;
+	}
+  
+	@media (max-width: 640px) {
+	  .title {
+		font-size: 1.5rem;
+		padding: 1rem 0;
+	  }
+	}
+  </style>

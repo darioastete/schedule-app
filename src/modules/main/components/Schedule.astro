@@ -1,0 +1,166 @@
+---
+interface ActivityDetails {
+	description: string;
+	break?: string; // Pausa opcional (como snacks)
+	conditions?: string; // Condiciones específicas (como ambiente oscuro para descanso)
+	snack?: string; // Detalles de snacks si aplica
+}
+
+interface Activity {
+	time: string; // Horario de la actividad
+	activity: string; // Nombre o título de la actividad
+	details: ActivityDetails; // Detalles específicos de la actividad
+}
+
+interface DaySchedule {
+	day: string; // Nombre del día
+	objective: string; // Objetivo principal del día
+	activities: Activity[]; // Lista de actividades del día
+}
+
+interface Props {
+	days: DaySchedule[];
+}
+
+const { days } = Astro.props;
+---
+
+<div class="schedule-container">
+  {
+    days.map((day) => (
+      <div class="day-card">
+        <h2 class="day-title">{day.day}</h2>
+        <p class="day-objective">{day.objective}</p>
+        
+        <div class="activities">
+          {day.activities.map((activity) => (
+            <div class="activity-card">
+              <div class="activity-header">
+                <span class="time">{activity.time}</span>
+                <h3 class="activity-title">{activity.activity}</h3>
+              </div>
+              
+              <div class="activity-details">
+                <p>{activity.details.description}</p>
+                {activity.details.break && (
+                  <p class="detail-item">
+                    <span class="detail-label">Pausa:</span> {activity.details.break}
+                  </p>
+                )}
+                {activity.details.conditions && (
+                  <p class="detail-item">
+                    <span class="detail-label">Condiciones:</span> {activity.details.conditions}
+                  </p>
+                )}
+                {activity.details.snack && (
+                  <p class="detail-item">
+                    <span class="detail-label">Snack:</span> {activity.details.snack}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .schedule-container {
+    display: grid;
+    gap: 2rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .day-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .day-title {
+    color: #1a1a1a;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .day-objective {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .activities {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .activity-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.2s;
+  }
+
+  .activity-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .activity-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .time {
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .activity-title {
+    color: #1a1a1a;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .activity-details {
+    color: #4b5563;
+    font-size: 0.95rem;
+  }
+
+  .detail-item {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .detail-label {
+    color: #4b5563;
+    font-weight: 600;
+  }
+
+  @media (min-width: 768px) {
+    .schedule-container {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .activity-header {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    
+    .day-card {
+      padding: 1rem;
+    }
+  }
+</style>
